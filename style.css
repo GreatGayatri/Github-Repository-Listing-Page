@@ -85,7 +85,7 @@ body {
     vertical-align:middle;
 }
 
-@media (max-width: 750px){
+@media (max-width: 900px){
     .profile{
         display: flex;
         flex-direction: column;
@@ -107,7 +107,7 @@ body {
     gap: 40px;
 }
 
-@media (max-width: 750px){
+@media (max-width: 900px){
     .grid-container{
         grid-template-columns: auto;
     }
