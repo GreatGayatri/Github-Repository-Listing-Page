@@ -1,5 +1,5 @@
 const url = "https://api.github.com/users/";
-const token = "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";
+// const token = "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";
 
 const Name = document.getElementById("name");
 const loginName = document.getElementById("login");
@@ -22,9 +22,7 @@ var currPage = 1;
 
 
 const fetchProfileInfo = async () => {
-    const data = await fetch(url + user, {
-        headers: {'Authorization': `Bearer ${token}`}
-      });
+    const data = await fetch(url + user);
     const response = await data.json();
     PhotoDiv.innerHTML = `<img src = ${response.avatar_url}></img>`;
     Name.innerHTML = response.name;
@@ -70,9 +68,7 @@ const showPagination = (result)  => {
 }
 
 const calcualtePages = async () => {
-    const data = await fetch(url + user + `/repos`, {
-        headers: {'Authorization': `Bearer ${token}`}
-    });
+    const data = await fetch(url + user + `/repos`);
     const response = await data.json();
     showPagination(response);
 }
@@ -145,9 +141,7 @@ const displayRepos = (result) => {
 }
 
 const fetchRepos = async () => {
-    const data = await fetch(url + user + `/repos?per_page=${repos_per_page}&&page=${currPage}`, {
-        headers: {'Authorization': `Bearer ${token}`}
-    });
+    const data = await fetch(url + user + `/repos?per_page=${repos_per_page}&&page=${currPage}`);
     const response = await data.json();
     displayRepos(response);
 
@@ -204,9 +198,7 @@ const searchButton = document.querySelector(".searchButton");
 //function to search repos
 const searchRepos = async (query) => {
     if(query){
-        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`,{
-            headers: {'Authorization': `Bearer ${token}`}
-        });
+        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`);
         const response = await data.json();
         displayRepos(response.items);
         showPagination(response.items);
