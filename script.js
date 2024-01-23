@@ -125,12 +125,18 @@ const displayRepos = (result) => {
         gridDesc.classList.add("descr");
         const gridSpan = document.createElement('span');
         gridSpan.classList.add("lang");
-
+        const gridLink = document.createElement('a');
+        gridLink.classList.add("repo-link");
+        
         gridTitle.innerHTML = repo.name;
         gridDesc.innerHTML = repo.description;
         gridSpan.innerHTML = repo.language;
-        gridItem.appendChild(gridTitle);
+        gridLink.appendChild(gridTitle);
+        gridLink.href = repo.html_url;
+        gridLink.target = "_blank";
+        gridItem.appendChild(gridLink);
         gridItem.appendChild(gridDesc);
+
         if(repo.language){
             gridItem.appendChild(gridSpan);
         }
