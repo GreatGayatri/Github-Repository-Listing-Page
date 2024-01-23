@@ -133,6 +133,9 @@ body {
     border-radius: 10px;
     color: white;
 }
+.repo-link{
+    text-decoration: none;
+}
 
 .pagination ul{
     display: flex;
