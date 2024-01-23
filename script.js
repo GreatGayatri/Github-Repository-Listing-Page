@@ -1,5 +1,5 @@
 const url = "https://api.github.com/users/";
-const token = "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";
+const token = "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";
 
 const Name = document.getElementById("name");
 const loginName = document.getElementById("login");
