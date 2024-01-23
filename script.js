@@ -1,5 +1,4 @@
 const url = "https://api.github.com/users/";
-// const token = "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";
 
 const Name = document.getElementById("name");
 const loginName = document.getElementById("login");
@@ -39,22 +38,21 @@ const fetchProfileInfo = async () => {
 
 const showPagination = (result)  => {
     pages = Math.ceil(result.length/repos_per_page);
-    console.log(pages);
-    // console.log(response.length);
-
-    document.querySelector('.prev').disabled = "true";
-    document.querySelector('.prev').style.color = "grey";
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    prevBtn.disabled = "true";
+    prevBtn.style.color = "grey";
 
     PageNum.innerHTML = "";
 
     if(pages <= 1 ){
-        document.querySelector('.prev').style.display = "none";
-        document.querySelector('.next').style.display = "none";
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
     }
 
     else{
-        document.querySelector('.prev').style.display = "block";
-        document.querySelector('.next').style.display = "block";
+        prevBtn.style.display = "block";
+        nextBtn.style.display = "block";
         for(var i = 1; i <= pages; i++){
             const pageOption = document.createElement('li');
             pageOption.classList.add("numb");
@@ -88,21 +86,23 @@ const changeCurrPageColor = () => {
 }
 
 const displayButton = () => {
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
     if(currPage > 1){
-        document.querySelector('.prev').disabled = "false";
-        document.querySelector('.prev').style.color = "black";
+        prevBtn.disabled = "false";
+        prevBtn.style.color = "black";
     }
     else if(currPage == 1){
-        document.querySelector('.prev').disabled = "true";
-        document.querySelector('.prev').style.color = "grey";
+        prevBtn.disabled = "true";
+        prevBtn.style.color = "grey";
     }
     if(currPage < pages){
-        document.querySelector('.next').disabled = "false";
-        document.querySelector('.next').style.color = "black";
+        nextBtn.disabled = "false";
+        nextBtn.style.color = "black";
     }
     else if(currPage == pages){
-        document.querySelector('.next').disabled = "true";
-        document.querySelector('.next').style.color = "grey";
+        nextBtn.disabled = "true";
+        nextBtn.style.color = "grey";
     }
 }
 
@@ -117,7 +117,6 @@ const displayRepos = (result) => {
     }
 
     result.forEach(repo => {
-        
         const gridItem = document.createElement('div');
         gridItem.classList.add("grid-item");
         const gridTitle = document.createElement('h2');
@@ -147,12 +146,20 @@ const fetchRepos = async () => {
 
 }
 
-fetchProfileInfo();
-calcualtePages();
-fetchRepos();
+const searchRepos = async (query) => {
+    if(query){
+        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`);
+        const response = await data.json();
+        displayRepos(response.items);
+        showPagination(response.items);
+    }
+    else{
+        alert("Enter value to search");
+    }
+    
+}
 
 const prevBtnFunc = () => {
-    // console.log(currPage);
     if(currPage > 1){
         currPage--;
     }
@@ -162,7 +169,6 @@ const prevBtnFunc = () => {
 }
 
 const nextBtnFunc = () => {
-    // console.log(currPage);
     if(currPage < pages){
         currPage++;
     }
@@ -170,7 +176,6 @@ const nextBtnFunc = () => {
     displayButton();
     changeCurrPageColor();
 }
-
 
 
 document.body.addEventListener( 'click', function ( e ) {
@@ -184,7 +189,6 @@ document.body.addEventListener( 'click', function ( e ) {
     };
 } );
 
-
 const prevButton = document.querySelector(".prev");
 prevButton.addEventListener("click", prevBtnFunc, false);
 
@@ -195,19 +199,6 @@ nextButton.addEventListener("click", nextBtnFunc, false);
 const searchBox = document.querySelector(".searchBox");
 const searchButton = document.querySelector(".searchButton");
 
-//function to search repos
-const searchRepos = async (query) => {
-    if(query){
-        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`);
-        const response = await data.json();
-        displayRepos(response.items);
-        showPagination(response.items);
-    }
-    else{
-        alert("Enter value to search");
-    }
-    
-}
 
 searchButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -230,6 +221,11 @@ repoButton.addEventListener('click', () => {
     fetchRepos();
     searchBox.value = "";
 });
+
+
+fetchProfileInfo();
+calcualtePages();
+fetchRepos();
 
 
 
