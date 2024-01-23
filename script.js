@@ -1,5 +1,5 @@
 const url = "https://api.github.com/users/";
-const token = "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";
+const token = "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";
 
 const Name = document.getElementById("name");
 const loginName = document.getElementById("login");
@@ -23,7 +23,7 @@ var currPage = 1;
 
 const fetchProfileInfo = async () => {
     const data = await fetch(url + user, {
-        headers: {'Authorization': "Bearer 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"}
+        headers: {'Authorization': `Bearer ${token}`}
       });
     const response = await data.json();
     PhotoDiv.innerHTML = `<img src = ${response.avatar_url}></img>`;
@@ -71,7 +71,7 @@ const showPagination = (result)  => {
 
 const calcualtePages = async () => {
     const data = await fetch(url + user + `/repos`, {
-        headers: {'Authorization': "Bearer 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"}
+        headers: {'Authorization': `Bearer ${token}`}
     });
     const response = await data.json();
     showPagination(response);
@@ -146,7 +146,7 @@ const displayRepos = (result) => {
 
 const fetchRepos = async () => {
     const data = await fetch(url + user + `/repos?per_page=${repos_per_page}&&page=${currPage}`, {
-        headers: {'Authorization': "Bearer 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"}
+        headers: {'Authorization': `Bearer ${token}`}
     });
     const response = await data.json();
     displayRepos(response);
@@ -204,7 +204,9 @@ const searchButton = document.querySelector(".searchButton");
 //function to search repos
 const searchRepos = async (query) => {
     if(query){
-        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`);
+        const data = await fetch(`https://api.github.com/search/repositories?q=${user}/${query}`,{
+            headers: {'Authorization': `Bearer ${token}`}
+        });
         const response = await data.json();
         displayRepos(response.items);
         showPagination(response.items);
